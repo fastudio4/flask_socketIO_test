@@ -11,7 +11,8 @@
             var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
 
             socket.on('my_response', function(data) {
-                $("#mess").text(' ' + data.count);
+                $("#temp").text(data.Temperature);
+                $("#hum").text(data.Humidity);
             });
         });
     </script>
@@ -19,7 +20,11 @@
 </head>
 <body>
     <div>
-        <span id="mess" class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        <ul>
+            <li id="temp"></li>
+            <li id="hum"></li>
+        </ul>
+
     </div>
 </body>
 </html>

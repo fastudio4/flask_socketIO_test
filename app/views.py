@@ -12,7 +12,7 @@ def background_thread():
         result = dht_data.read()
         sio.sleep(1)
         if result.is_valid():
-            sio.emit('my_response', {'data': 'Message from server', 'count': result.temperature}, namespace='/test')
+            sio.emit('my_response', {'Temperature': result.temperature, 'Humidity': result.humidity}, namespace='/test')
 
 @app.route('/')
 def home():
@@ -23,6 +23,6 @@ def test_connect():
     global thread
     if thread is None:
         thread = sio.start_background_task(target=background_thread)
-    emit('my_response', {'data': 'Connected', 'count': ' '})
+    emit('my_response', {'Temperature': '', 'Humidity': ''})
 
 
