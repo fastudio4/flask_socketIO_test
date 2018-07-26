@@ -2,17 +2,17 @@ from . import app, sio, dht_data
 from flask import render_template
 from flask_socketio import emit
 from time import strftime
-
+import app.ds18b20
 
 thread = None
 
 
 def background_thread():
     while True:
-        result = dht_data.read()
+        result = read_temp()[0]
         sio.sleep(1)
         if result.is_valid():
-            sio.emit('my_response', {'Temperature': result.temperature, 'Humidity': result.humidity}, namespace='/test')
+            sio.emit('my_response', {'temp': result}, namespace='/test')
 
 @app.route('/')
 def home():
@@ -23,6 +23,6 @@ def test_connect():
     global thread
     if thread is None:
         thread = sio.start_background_task(target=background_thread)
-    emit('my_response', {'Temperature': '', 'Humidity': ''})
+    emit('my_response', {'temp': ''})
 
 

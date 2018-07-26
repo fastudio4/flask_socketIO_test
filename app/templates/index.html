@@ -11,20 +11,39 @@
             var socket = io.connect('http://' + document.domain + ':' + location.port + namespace);
 
             socket.on('my_response', function(data) {
-                $("#temp").text(data.Temperature);
-                $("#hum").text(data.Humidity);
+
+                function toggle(value) {
+                    var temp = Number(value);
+                    if (temp < 24) {
+                        return 'progress-bar progress-bar-success';
+                    }
+                    if (temp > 24 && sec < 30) {
+                        return 'progress-bar progress-bar-warning';
+                    }
+                    if (temp > 30) {
+                        return 'progress-bar progress-bar-danger';
+                    }
+                }
+
+                $("#temp_ds").width(data.temp + "%").attr('aria-valuenow', data.temp).text(data.temp + '%').attr('class', toggle(data.temp));
+
             });
         });
     </script>
     <title>{{ title }}</title>
 </head>
 <body>
-    <div>
-        <ul>
-            <li id="temp"></li>
-            <li id="hum"></li>
-        </ul>
+    <div class="jumbotron">
+        <div class="container">
+            <h1>Progress bars Flask-SocketIO <small>with Bootstrap</small></h1>
+            <p>Flask-SocketIO send seconds and random numbers in SocketIO.js. Test version of the framework work Flask with SocketIO on OrangePI with a sensor ds18b20
+                <a href="https://github.com/fastudio4/flask_socketIO_test.git">here</a></p>
+            <div class="progress">
+                <div id="temp_ds" class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
 
+        </div>
     </div>
+
 </body>
 </html>
